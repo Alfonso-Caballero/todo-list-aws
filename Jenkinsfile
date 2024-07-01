@@ -39,6 +39,7 @@ pipeline {
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
                             sh 'export PYTHONPATH=$WORKSPACE'
+                            sh 'flake8 --version'
                             sh '''
                                 python3 -m flake8 --exit-zero --format=pylint app >flake8.out
                                 '''
