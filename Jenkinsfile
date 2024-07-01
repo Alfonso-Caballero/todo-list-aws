@@ -27,11 +27,13 @@ pipeline {
                     echo "${WORKSPACE}"
                 }
             }
+            /*
             post {
                     always {
                         deleteDir()
                         }
                     }
+                    */
         }
         stage('Static') {
                     steps {
