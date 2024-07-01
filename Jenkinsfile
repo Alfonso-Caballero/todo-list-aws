@@ -52,5 +52,6 @@ pipeline {
                 }
             }
         // Puedes añadir más etapas aquí según sea necesario
+        }
     }
 }
