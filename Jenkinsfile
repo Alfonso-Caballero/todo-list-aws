@@ -22,6 +22,9 @@ pipeline {
                             credentialsId: env.GIT_CREDENTIALS_ID
                         ]]
                     ])
+                    sh 'whoami'
+                    sh 'hostname'
+                    echo "${WORKSPACE}"
                 }
             }
             post {
