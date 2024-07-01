@@ -38,9 +38,8 @@ pipeline {
         stage('Static') {
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
-                            sh 'export PYTHONPATH=$WORKSPACE'
                             sh '''
-                                python3 -m flake8 --exit-zero --format=pylint app >flake8.out
+                                python3 -m /home/ubuntu/.local/bin/flake8 --exit-zero --format=pylint app >flake8.out
                                 '''
                             recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')], qualityGates: [[threshold: 8, type: 'TOTAL', unstable: true], [threshold: 10, type: 'TOTAL', unstable: false]]
                             sh 'whoami'
