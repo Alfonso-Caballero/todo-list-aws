@@ -24,6 +24,11 @@ pipeline {
                     ])
                 }
             }
+            post {
+                    always {
+                        deleteDir()
+                        }
+                    }
         }
         // Puedes añadir más etapas aquí según sea necesario
     }
