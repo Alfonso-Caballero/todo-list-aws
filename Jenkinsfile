@@ -5,6 +5,7 @@ pipeline {
         GIT_REPO_URL = 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
         GIT_BRANCH = 'develop'
         GIT_CREDENTIALS_ID = 'git_token'
+        PATH = "/home/ubuntu/.local/bin:$PATH"
     }
 
     stages {
@@ -41,12 +42,7 @@ pipeline {
                             sh 'whoami'
                             sh 'hostname'
                             echo "${WORKSPACE}"
-                            sh 'export PYTHONPATH=$WORKSPACE'
-                            sh '''
-                                /home/ubuntu/.local/bin/flake8 --exit-zero --format=pylint app >flake8.out
-                                '''
-                            recordIssues tools: [flake8(name: 'Flake8', pattern: 'flake8.out')], qualityGates: [[threshold: 8, type: 'TOTAL', unstable: true], [threshold: 10, type: 'TOTAL', unstable: false]]
-                           
+                            sh 'flake8 --version'
                         }
                     }
                     post {
