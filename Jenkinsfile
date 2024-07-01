@@ -41,6 +41,7 @@ pipeline {
                             sh 'whoami'
                             sh 'hostname'
                             echo "${WORKSPACE}"
+                            sh 'export PYTHONPATH=$WORKSPACE'
                             sh 'bandit --version'
                         }
                     }
