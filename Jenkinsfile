@@ -25,7 +25,6 @@ pipeline {
                     sh 'whoami'
                     sh 'hostname'
                     echo "${WORKSPACE}"
-                    sh 'flake8 --version'
                 }
             }
             /*
