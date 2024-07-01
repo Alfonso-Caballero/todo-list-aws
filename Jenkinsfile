@@ -36,7 +36,6 @@ pipeline {
         stage('Static') {
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
-                            unstash 'code'
                             sh '''
                                 python3 -m flake8 --exit-zero --format=pylint app >flake8.out
                                 '''
