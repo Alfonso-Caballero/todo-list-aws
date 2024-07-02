@@ -146,6 +146,11 @@ pipeline {
                 }
             }
         }
+        post {
+            always {
+                    deleteDir()
+                    }
+                }
     }
         /*
         stage('Rest Test') {
@@ -159,11 +164,7 @@ pipeline {
             }
             */
             
-            post {
-                    always {
-                        deleteDir()
-                        }
-                    }
+            
                     
     }
 }
