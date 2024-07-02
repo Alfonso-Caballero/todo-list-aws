@@ -27,5 +27,48 @@ pipeline {
                         }
                     }   
                 }
+        stage('Deploy') {
+            agent {
+                label 'ec2'
             }
-      }
+            steps {
+                sh 'whoami'
+                sh 'hostname'
+                echo "${WORKSPACE}"
+                sh "aws cloudformation delete-stack --stack-name my-staging-stack"
+                echo "Waiting for stack deletion..."
+                sh "aws cloudformation wait stack-delete-complete --stack-name my-staging-stack"
+                sh 'sam build'
+                sh 'sam validate --region us-east-1'
+                script{
+                    def deployOutput = sh(
+                                script: '''
+                                    sam deploy \
+                                    --template-file .aws-sam/build/template.yaml \
+                                    --stack-name my-staging-stack \
+                                    --capabilities CAPABILITY_IAM \
+                                    --no-confirm-changeset \
+                                    --region us-east-1 \
+                                    --s3-bucket bucketnugget2 \
+                                    --parameter-overrides \
+                                        Environment=production \
+                                        ParameterKey1=Value1 \
+                                        ParameterKey2=Value2 \
+                                    --force-upload
+                                ''',
+                                returnStdout: true
+                            ).trim()
+                            
+                            // Extraer la URL de salida (BaseUrlApi)
+                            def baseUrlMatch = deployOutput =~ /Value\s+(.+)/
+                            def baseUrl = baseUrlMatch[0][1].trim()
+                            
+                            echo "Deployed successfully. Base URL: ${baseUrl}"
+                            
+                            // Ejecutar las pruebas de integración con la URL capturada como parámetro
+                           env.BASE_URL = baseUrl
+                    }
+            }
+        }
+    }
+}
