@@ -1,5 +1,9 @@
 pipeline {
     agent any
+
+    options {
+        skipDefaultCheckout() // Default repository cloning fails, causing pipeline failure
+    }
     
     environment {
         GIT_BRANCH = 'develop'
