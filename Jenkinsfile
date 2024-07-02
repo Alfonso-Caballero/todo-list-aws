@@ -62,6 +62,7 @@ pipeline {
                 label 'ec2'
             }
             steps {
+                unstash 'code'
                 sh 'whoami'
                 sh 'hostname'
                 echo "${WORKSPACE}"
