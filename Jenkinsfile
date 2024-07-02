@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                    git branch: 'develop',
-                        credentialsId: 'git_token',
+                        credentialsId: 'token',
                         url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
                     bat 'whoami'
                     bat 'hostname'
