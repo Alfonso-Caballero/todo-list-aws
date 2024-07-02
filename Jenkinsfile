@@ -129,15 +129,15 @@ pipeline {
         stage('Promote') {
             steps {
                 script{
-                    // Cambiar al branch principal y actualizarlo desde el remoto
-                    bat "git checkout main"
-                    bat "git pull origin main"
-                    
-                    // Fusionar la rama de características en la rama principal
-                    bat "git merge --no-ff origin/develop"
-                    
-                    // Realizar el push de la rama principal actualizada
-                    bat "git push origin main"
+                    echo "Realizando checkout de ${env.MASTER_BRANCH}..."
+                    git branch: "${env.MASTER_BRANCH}", changelog: false, poll: false
+                    echo "Realizando pull desde origin ${env.MASTER_BRANCH}..."
+                    git pull origin ${env.MASTER_BRANCH}
+                    echo "Realizando merge de ${env.GIT_BRANCH} en ${env.MASTER_BRANCH}..."
+                    git merge --no-ff origin/${env.GIT_BRANCH}
+                    echo "Realizando push de ${env.MASTER_BRANCH} a origin..."
+                    git push origin ${env.MASTER_BRANCH}
+                    echo "git push completado"
                 }
                 bat 'whoami'
                 bat 'hostname'
