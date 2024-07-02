@@ -137,22 +137,18 @@ pipeline {
                     @echo off
                     setlocal
 
-                    REM Clone the main branch
+                    REM Clone the main branch using the token
                     git clone -b main https://%GIT_TOKEN%@github.com/Alfonso-Caballero/todo-list-aws.git main-repo
                     cd main-repo
-
-                    REM Configure Git locally
-                    git config user.email "alfonso678@gmail.com"
-                    git config user.name "Alfonso-Caballero"
 
                     REM Add the develop branch as a remote and fetch it
                     git remote add develop https://%GIT_TOKEN%@github.com/Alfonso-Caballero/todo-list-aws.git
                     git fetch develop develop
 
-                    REM Merge the develop branch into main
+                    REM Merge the develop branch into main using the token
                     git merge develop/develop --no-ff --no-edit
 
-                    REM Push the changes to the main branch
+                    REM Push the changes to the main branch using the token
                     git push origin main
 
                     endlocal
