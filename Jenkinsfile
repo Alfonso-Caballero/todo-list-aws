@@ -40,7 +40,7 @@ pipeline {
                     }
                     */
         }
-        stage('Static') {
+        stage('Static Test') {
             agent {
                 label 'ec2'
             }
