@@ -102,12 +102,7 @@ pipeline {
             }
             steps {
                 script {
-                    try {
-                        sh "pytest test/integration/todoApiTest.py"
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Falló la ejecución de pruebas de integración: ${e.message}"
-                    }
+                    sh "pytest test/integration/todoApiTest.py"
                 }
             }
             /*
@@ -117,14 +112,6 @@ pipeline {
                         }
                     }
                     */
-        }
-    }
-    post {
-        success {
-            echo 'Deployment to Staging was successful!'
-        }
-        failure {
-            echo 'Deployment to Staging failed.'
         }
     }
 }
