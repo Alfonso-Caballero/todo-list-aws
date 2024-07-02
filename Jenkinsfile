@@ -132,11 +132,32 @@ pipeline {
         
         stage('Promote') {
             steps {
-                bat 'git tag -a tagName -m "Example"'
-                bat 'git merge develop'
-                bat 'git commit -am "Merged develop branch to main'
-                bat "git push origin main"
-                bat 'whoami'
+                withCredentials([string(credentialsId: 'token', variable: 'GIT_TOKEN')]) {
+                    bat """
+                    @echo off
+                    setlocal
+
+                    REM Clone the main branch
+                    git clone -b main https://%GIT_TOKEN%@github.com/Alfonso-Caballero/todo-list-aws.git main-repo
+                    cd main-repo
+
+                    REM Configure Git locally
+                    git config user.email "alfonso678@gmail.com"
+                    git config user.name "Alfonso-Caballero"
+
+                    REM Add the develop branch as a remote and fetch it
+                    git remote add develop https://%GIT_TOKEN%@github.com/Alfonso-Caballero/todo-list-aws.git
+                    git fetch develop develop
+
+                    REM Merge the develop branch into main
+                    git merge develop/develop --no-ff --no-edit
+
+                    REM Push the changes to the main branch
+                    git push origin main
+
+                    endlocal
+                    """
+                }
                 bat 'hostname'
                 echo "${WORKSPACE}"
                 echo "Code successfully merged into main."
