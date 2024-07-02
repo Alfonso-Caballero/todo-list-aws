@@ -31,12 +31,7 @@ pipeline {
                     echo "${WORKSPACE}"
                     stash name: 'code', includes : '**'
                 }
-            }
-            post {
-                    always {
-                        deleteDir()
-                        }
-                    }      
+            }   
         }
         stage('Static Test') {
             agent {
@@ -64,6 +59,9 @@ pipeline {
                 label 'ec2'
             }
             steps {
+                sh 'whoami'
+                sh 'hostname'
+                echo "${WORKSPACE}"
                 sh "aws cloudformation delete-stack --stack-name my-staging-stack"
                 echo "Waiting for stack deletion..."
                 sh "aws cloudformation wait stack-delete-complete --stack-name my-staging-stack"
@@ -139,6 +137,11 @@ pipeline {
                 echo "${WORKSPACE}"
                 echo "Code successfully merged into ${env.MASTER_BRANCH}."
             }
+            post {
+                    always {
+                        deleteDir()
+                        }
+                    }   
         }
     }
 }
