@@ -69,5 +69,34 @@ pipeline {
             */
         // Puedes añadir más etapas aquí según sea necesario
         }
+        stage('Deploy') {
+            steps {
+                unstash 'code'
+                sh 'sam build'
+                sh 'sam validate'
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials-id']]) {
+                    sh '''
+                        sam deploy \
+                            --template-file .aws-sam/build/template.yaml \
+                            --stack-name my-staging-stack \
+                            --capabilities CAPABILITY_IAM \
+                            --no-confirm-changeset \
+                            --region us-east-1 \
+                            --parameter-overrides \
+                                Environment=staging \
+                                ParameterKey1=Value1 \
+                                ParameterKey2=Value2
+                    '''
+                }
+            }
+        }
+    }
+    post {
+        success {
+            echo 'Deployment to Staging was successful!'
+        }
+        failure {
+            echo 'Deployment to Staging failed.'
+        }
     }
 }
