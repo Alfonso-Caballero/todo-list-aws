@@ -132,7 +132,7 @@ pipeline {
                     bat '''
                         git checkout %MASTER_BRANCH%
                         git merge --no-ff origin/develop
-                        git push origin %MASTER_BRANCH%
+                        git push origin %MASTER_BRANCH% --token %GIT_CREDENTIALS_ID%
                     '''
                 }
                 bat 'whoami'
