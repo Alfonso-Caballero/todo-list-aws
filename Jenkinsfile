@@ -29,6 +29,7 @@ pipeline {
                     bat 'whoami'
                     bat 'hostname'
                     echo "${WORKSPACE}"
+                    stash name: 'code', includes : '**'
                 }
             }
             /*
@@ -45,11 +46,14 @@ pipeline {
             }
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
+                            unstash 'code'
+                            sh '''
+                                (bandit -r ./src -f custom -o bandit.out -l --msg-template "{abspath}:{line}: [{test_id}] {msg}") || exit 0 
+                                '''
+                            recordIssues tools: [pyLint(name: 'Bandit', pattern: 'bandit.out')], qualityGates: [[threshold: 2, type: 'TOTAL', unstable: true], [threshold: 4, type: 'TOTAL', unstable: false]]
                             sh 'whoami'
                             sh 'hostname'
                             echo "${WORKSPACE}"
-                            
-                            sh 'bandit --version'
                         }
                     }
             /*
