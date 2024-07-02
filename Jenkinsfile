@@ -80,32 +80,34 @@ pipeline {
                 sh "aws cloudformation wait stack-delete-complete --stack-name my-staging-stack"
                 sh 'sam build'
                 sh 'sam validate --region us-east-1'
-                def deployOutput = sh(
-                            script: '''
-                                sam deploy \
-                                --template-file .aws-sam/build/template.yaml \
-                                --stack-name ${env.STACK_NAME} \
-                                --capabilities CAPABILITY_IAM \
-                                --no-confirm-changeset \
-                                --region ${env.AWS_DEFAULT_REGION} \
-                                --s3-bucket bucketnugget \
-                                --parameter-overrides \
-                                    Environment=staging \
-                                    ParameterKey1=Value1 \
-                                    ParameterKey2=Value2 \
-                                --force-upload
-                            ''',
-                            returnStdout: true
-                        ).trim()
-                        
-                        // Extraer la URL de salida (BaseUrlApi)
-                        def baseUrlMatch = deployOutput =~ /Value\s+(.+)/
-                        def baseUrl = baseUrlMatch[0][1].trim()
-                        
-                        echo "Deployed successfully. Base URL: ${baseUrl}"
-                        
-                        // Ejecutar las pruebas de integración con la URL capturada como parámetro
-                        sh "pytest --base-url=${baseUrl} test/integration/todoApiTest.py"
+                script{
+                    def deployOutput = sh(
+                                script: '''
+                                    sam deploy \
+                                    --template-file .aws-sam/build/template.yaml \
+                                    --stack-name ${env.STACK_NAME} \
+                                    --capabilities CAPABILITY_IAM \
+                                    --no-confirm-changeset \
+                                    --region ${env.AWS_DEFAULT_REGION} \
+                                    --s3-bucket bucketnugget \
+                                    --parameter-overrides \
+                                        Environment=staging \
+                                        ParameterKey1=Value1 \
+                                        ParameterKey2=Value2 \
+                                    --force-upload
+                                ''',
+                                returnStdout: true
+                            ).trim()
+                            
+                            // Extraer la URL de salida (BaseUrlApi)
+                            def baseUrlMatch = deployOutput =~ /Value\s+(.+)/
+                            def baseUrl = baseUrlMatch[0][1].trim()
+                            
+                            echo "Deployed successfully. Base URL: ${baseUrl}"
+                            
+                            // Ejecutar las pruebas de integración con la URL capturada como parámetro
+                            sh "pytest --base-url=${baseUrl} test/integration/todoApiTest.py"
+                    }
                 /*
                 sh '''
                         sam deploy \
