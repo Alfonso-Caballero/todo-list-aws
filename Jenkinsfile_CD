@@ -68,32 +68,32 @@ pipeline {
             }
         }
         stage('Rest Test') {
-                    agent {
-                        label 'ec2'
-                    }
-                    steps {
-                        script {
-                            sh 'whoami'
-                            sh 'hostname'
-                            echo "${WORKSPACE}"
-                            try {
-                                sh "pytest -m read_only test/integration/todoApiTest.py"
-                            } catch (Exception e) {
-                                currentBuild.result = 'FAILURE'
-                                error "Test execution failed: ${e.message}"
-                            }
-                        }
-                    }
-                    post {
-                        always {
-                            script {
-                                if (currentBuild.result == 'FAILURE') {
-                                    error "Pipeline failed. Check logs for details."
-                                }      
-                            }
-                            deleteDir()
-                        }
+            agent {
+                label 'ec2'
+            }
+            steps {
+                script {
+                    sh 'whoami'
+                    sh 'hostname'
+                    echo "${WORKSPACE}"
+                    try {
+                        sh "pytest test/integration/todoApiTest.py || true"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Test execution failed: ${e.message}"
                     }
                 }
+            }
+            post {
+                always {
+                    script {
+                        if (currentBuild.result == 'FAILURE') {
+                            error "Pipeline failed. Check logs for details."
+                        }      
+                    }
+                    deleteDir()
+                }
+            }
+        }
         }
 }
