@@ -128,11 +128,22 @@ pipeline {
         
         stage('Promote') {
             steps {
-                // Cambiar al directorio del repositorio clonado
+                    // Hacer fetch para actualizar las referencias remotas
+                bat 'git fetch'
+                
+                // Verificar el estado actual antes de hacer merge
+                bat 'git status'
+                
+                // Cambiar a la rama main
                 bat 'git checkout main'
+                
+                // Hacer merge de develop a main
                 bat 'git merge --no-ff origin/develop'
-                        
-                // Realizar push de la rama master a 'origin'
+                
+                // Verificar el estado después de hacer merge
+                bat 'git status'
+                
+                // Intentar hacer push a la rama main
                 bat 'git push origin main'
                 bat 'whoami'
                 bat 'hostname'
