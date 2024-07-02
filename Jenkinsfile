@@ -77,7 +77,6 @@ pipeline {
                 unstash 'code'
                 sh 'sam build'
                 sh 'sam validate --region us-east-1'
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'aws-credentials-id']]) {
                     sh '''
                         sam deploy \
                             --template-file .aws-sam/build/template.yaml \
@@ -90,7 +89,6 @@ pipeline {
                                 ParameterKey1=Value1 \
                                 ParameterKey2=Value2
                     '''
-                }
             }
         }
     }
