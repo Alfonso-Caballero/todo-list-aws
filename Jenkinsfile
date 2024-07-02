@@ -144,8 +144,8 @@ pipeline {
                             error "Pipeline failed. Check logs for details."
                     }      
                 }
+                deleteDir()
             }
-            deleteDir()
         }
     }
         /*
