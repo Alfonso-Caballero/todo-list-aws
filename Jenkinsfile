@@ -75,9 +75,10 @@ pipeline {
             }
             steps {
                 unstash 'code'
+                sh "aws cloudformation delete-stack --stack-name my-staging-stack"
                 sh 'sam build'
                 sh 'sam validate --region us-east-1'
-                    sh '''
+                sh '''
                         sam deploy \
                         --template-file .aws-sam/build/template.yaml \
                         --stack-name my-staging-stack \
