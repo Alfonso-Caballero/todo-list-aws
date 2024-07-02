@@ -8,7 +8,7 @@ pipeline {
     environment {
         GIT_REPO_URL = 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
         GIT_BRANCH = 'develop'
-        GIT_CREDENTIALS_ID = 'git_token'
+        GIT_CREDENTIALS_ID = 'token'
         MASTER_BRANCH = 'main'
     }
 
@@ -17,7 +17,7 @@ pipeline {
             steps {
                 script {
                    git branch: 'develop',
-                        credentialsId: 'token',
+                        credentialsId: env.GIT_CREDENTIALS_ID,
                         url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
                     bat 'whoami'
                     bat 'hostname'
