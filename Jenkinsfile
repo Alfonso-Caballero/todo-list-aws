@@ -130,9 +130,9 @@ pipeline {
             steps {
                 script{
                     bat '''
-                        git checkout ${env.MASTER_BRANCH}
-                        git merge --no-ff origin/your-feature-branch
-                        git push origin ${env.MASTER_BRANCH}
+                        git checkout %MASTER_BRANCH%
+                        git merge --no-ff origin/develop
+                        git push origin %MASTER_BRANCH%
                     '''
                 }
                 bat 'whoami'
