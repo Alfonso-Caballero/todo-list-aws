@@ -8,7 +8,7 @@ pipeline {
     environment {
         GIT_REPO_URL = 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
         GIT_BRANCH = 'develop'
-        GIT_CREDENTIALS_ID = 'git_toasasasasaken'
+        GIT_CREDENTIALS_ID = 'git_token'
         MASTER_BRANCH = 'main'
     }
 
@@ -16,16 +16,9 @@ pipeline {
         stage('Get Code') {
             steps {
                 script {
-                    checkout([
-                        $class: 'GitSCM', 
-                        branches: [[name: "refs/heads/${env.GIT_BRANCH}"]],
-                        doGenerateSubmoduleConfigurations: false,
-                        extensions: [],
-                        userRemoteConfigs: [[
-                            url: env.GIT_REPO_URL,
-                            credentialsId: env.GIT_CREDENTIALS_ID
-                        ]]
-                    ])
+                   git branch: 'develop',
+                        credentialsId: 'git_token',
+                        url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
                     bat 'whoami'
                     bat 'hostname'
                     echo "${WORKSPACE}"
