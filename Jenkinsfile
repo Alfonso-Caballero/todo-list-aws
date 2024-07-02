@@ -128,17 +128,12 @@ pipeline {
         
         stage('Promote') {
             steps {
-                script{
-                    echo "Realizando checkout de ${env.MASTER_BRANCH}..."
-                    git branch: "${env.MASTER_BRANCH}", changelog: false, poll: false
-                    echo "Realizando pull desde origin ${env.MASTER_BRANCH}..."
-                    git pull origin ${env.MASTER_BRANCH}
-                    echo "Realizando merge de ${env.GIT_BRANCH} en ${env.MASTER_BRANCH}..."
-                    git merge --no-ff origin/${env.GIT_BRANCH}
-                    echo "Realizando push de ${env.MASTER_BRANCH} a origin..."
-                    git push origin ${env.MASTER_BRANCH}
-                    echo "git push completado"
-                }
+                // Cambiar al directorio del repositorio clonado
+                sh 'git checkout main'
+                sh 'git merge --no-ff origin/develop'
+                        
+                // Realizar push de la rama master a 'origin'
+                sh 'git push origin main'
                 bat 'whoami'
                 bat 'hostname'
                 echo "${WORKSPACE}"
