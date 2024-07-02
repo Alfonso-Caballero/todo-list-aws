@@ -91,7 +91,7 @@ pipeline {
                         --parameter-overrides \
                             Environment=staging \
                             ParameterKey1=Value1 \
-                            ParameterKey2=Value2
+                            ParameterKey2=Value2 \
                         --force-upload
                     '''
             }
