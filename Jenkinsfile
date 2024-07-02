@@ -16,9 +16,11 @@ pipeline {
         stage('Get Code') {
             steps {
                 script {
-                   git branch: 'develop',
-                        credentialsId: env.GIT_CREDENTIALS_ID,
+                    withCredentials([gitUsernamePassword(credentialsId: 'token', gitToolName: 'git-tool')]) {
+                    git branch: 'develop',
                         url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
+                }
+                   
                     bat 'whoami'
                     bat 'hostname'
                     echo "${WORKSPACE}"
