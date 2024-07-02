@@ -106,7 +106,7 @@ pipeline {
                             echo "Deployed successfully. Base URL: ${baseUrl}"
                             
                             // Ejecutar las pruebas de integración con la URL capturada como parámetro
-                            sh "pytest --base-url=${baseUrl} test/integration/todoApiTest.py"
+                           env.BASE_URL = baseUrl
                     }
                 /*
                 sh '''
