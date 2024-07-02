@@ -147,11 +147,6 @@ pipeline {
             }
             deleteDir()
         }
-        post {
-            always {
-                    
-                    }
-                }
     }
         /*
         stage('Rest Test') {
