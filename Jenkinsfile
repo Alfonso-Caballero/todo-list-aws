@@ -128,15 +128,18 @@ pipeline {
         
         stage('Promote') {
             steps {
-                bat '''
-                    git checkout ${env.MASTER_BRANCH}
-                    git merge --no-ff origin/your-feature-branch
-                    git push origin ${env.MASTER_BRANCH}
-                '''
+                script{
+                    bat '''
+                        git checkout ${env.MASTER_BRANCH}
+                        git merge --no-ff origin/your-feature-branch
+                        git push origin ${env.MASTER_BRANCH}
+                    '''
+                }
                 bat 'whoami'
                 bat 'hostname'
                 echo "${WORKSPACE}"
                 echo "Code successfully merged into ${env.MASTER_BRANCH}."
+                    
             }
             post {
                     always {
