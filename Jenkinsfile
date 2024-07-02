@@ -110,7 +110,7 @@ pipeline {
                 script {
                     sh 'whoami'
                     sh 'hostname'
-                    echo "${WORKSPACE}
+                    echo "${WORKSPACE}"
                     try {
                         sh "pytest test/integration/todoApiTest.py"
                     } catch (Exception e) {
@@ -139,7 +139,7 @@ pipeline {
                 '''
                 bat 'whoami'
                 bat 'hostname'
-                echo "${WORKSPACE}
+                echo "${WORKSPACE}"
                 echo "Code successfully merged into ${env.MASTER_BRANCH}."
             }
         }
