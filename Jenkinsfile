@@ -38,6 +38,9 @@ pipeline {
                     */
         }
         stage('Static') {
+            agent {
+                label 'ec2'
+            }
                     steps {
                         catchError(buildResult: 'UNSTABLE', stageResult: 'UNSTABLE') {
                             sh 'whoami'
