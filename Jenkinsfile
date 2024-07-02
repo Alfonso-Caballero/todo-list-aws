@@ -14,6 +14,7 @@ pipeline {
     stages {
         stage('Get Code') {
             steps {
+                /*
                 bat """
                 @echo off
                 setlocal
@@ -28,7 +29,8 @@ pipeline {
 
                 endlocal
                 """
-                   
+                */
+                git branch: 'develop', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
                 bat 'whoami'
                 bat 'hostname'
                 echo "${WORKSPACE}"
