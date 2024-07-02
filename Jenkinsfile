@@ -15,7 +15,6 @@ pipeline {
         stage('Get Code') {
             steps {
                 script {
-                    // Utiliza las credenciales para clonar el repositorio
                     checkout([
                         $class: 'GitSCM', 
                         branches: [[name: "refs/heads/${env.GIT_BRANCH}"]],
@@ -67,7 +66,6 @@ pipeline {
                 }
             }
             */
-        // Puedes añadir más etapas aquí según sea necesario
         }
         stage('Deploy') {
             agent {
