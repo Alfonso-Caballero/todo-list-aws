@@ -20,13 +20,8 @@ pipeline {
                 echo "${WORKSPACE}"
                 stash name: 'code', includes : '**'
                 
-            }
-            post {
-                    always {
-                        deleteDir()
-                        }
-                    }   
-                }
+            }   
+        }
         stage('Deploy') {
             agent {
                 label 'ec2'
@@ -91,6 +86,11 @@ pipeline {
                     }
                     post {
                         always {
+                            script {
+                                if (currentBuild.result == 'FAILURE') {
+                                    error "Pipeline failed. Check logs for details."
+                                }      
+                            }
                             deleteDir()
                         }
                     }
