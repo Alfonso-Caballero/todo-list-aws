@@ -5,8 +5,6 @@ pipeline {
         GIT_REPO_URL = 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
         GIT_BRANCH = 'develop'
         GIT_CREDENTIALS_ID = 'git_token'
-        PATH = "/home/ubuntu/.local/bin:/usr/local/bin:/usr/bin:/bin"
-        PYTHONPATH = "/var/lib/jenkins/workspace/retoD_1"
     }
 
     stages {
