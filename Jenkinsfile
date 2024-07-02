@@ -92,6 +92,28 @@ pipeline {
                     '''
             }
         }
+        stage('Rest Test') {
+            agent {
+                label 'ec2'
+            }
+            steps {
+                script {
+                    try {
+                        sh "pytest test/integration/todoApiTest.py"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Falló la ejecución de pruebas de integración: ${e.message}"
+                    }
+                }
+            }
+            /*
+            post {
+                    always {
+                        deleteDir()
+                        }
+                    }
+                    */
+        }
     }
     post {
         success {
