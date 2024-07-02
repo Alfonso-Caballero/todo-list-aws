@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    options {
+        skipDefaultCheckout() // Default repository cloning fails, causing pipeline failure
+    }
+
     environment {
         GIT_REPO_URL = 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
         GIT_BRANCH = 'develop'
