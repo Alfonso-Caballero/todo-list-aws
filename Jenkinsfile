@@ -62,13 +62,13 @@ pipeline {
                 label 'ec2'
             }
             steps {
-                unstash 'code'
                 sh 'whoami'
                 sh 'hostname'
                 echo "${WORKSPACE}"
                 sh "aws cloudformation delete-stack --stack-name my-staging-stack"
                 echo "Waiting for stack deletion..."
                 sh "aws cloudformation wait stack-delete-complete --stack-name my-staging-stack"
+                unstash 'code'
                 sh 'sam build'
                 sh 'sam validate --region us-east-1'
                 script{
