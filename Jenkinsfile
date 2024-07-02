@@ -9,6 +9,7 @@ pipeline {
         GIT_REPO_URL = 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
         GIT_BRANCH = 'develop'
         GIT_CREDENTIALS_ID = 'git_token'
+        MASTER_BRANCH = 'main'
     }
 
     stages {
@@ -95,6 +96,9 @@ pipeline {
                             
                             // Ejecutar las pruebas de integración con la URL capturada como parámetro
                            env.BASE_URL = baseUrl
+                           sh 'whoami'
+                           sh 'hostname'
+                           echo "${WORKSPACE}"
                     }
             }
         }
@@ -104,6 +108,9 @@ pipeline {
             }
             steps {
                 script {
+                    sh 'whoami'
+                    sh 'hostname'
+                    echo "${WORKSPACE}
                     try {
                         sh "pytest test/integration/todoApiTest.py"
                     } catch (Exception e) {
@@ -122,6 +129,19 @@ pipeline {
                 deleteDir()
                 }
             }
-        }              
+        }
+        stage('Promote') {
+            steps {
+                sh '''
+                    git checkout ${env.MASTER_BRANCH}
+                    git merge --no-ff origin/your-feature-branch
+                    git push origin ${env.MASTER_BRANCH}
+                '''
+                bat 'whoami'
+                bat 'hostname'
+                echo "${WORKSPACE}
+                echo "Code successfully merged into ${env.MASTER_BRANCH}."
+            }
+        }
     }
 }
