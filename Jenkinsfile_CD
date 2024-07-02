@@ -35,9 +35,9 @@ pipeline {
                 sh 'whoami'
                 sh 'hostname'
                 echo "${WORKSPACE}"
-                sh "aws cloudformation delete-stack --stack-name my-staging-stack"
+                sh "aws cloudformation delete-stack --stack-name my-production-stack"
                 echo "Waiting for stack deletion..."
-                sh "aws cloudformation wait stack-delete-complete --stack-name my-staging-stack"
+                sh "aws cloudformation wait stack-delete-complete --stack-name my-production-stack"
                 sh 'sam build'
                 sh 'sam validate --region us-east-1'
                 script{
@@ -45,7 +45,7 @@ pipeline {
                                 script: '''
                                     sam deploy \
                                     --template-file .aws-sam/build/template.yaml \
-                                    --stack-name my-staging-stack \
+                                    --stack-name my-production-stack \
                                     --capabilities CAPABILITY_IAM \
                                     --no-confirm-changeset \
                                     --region us-east-1 \
