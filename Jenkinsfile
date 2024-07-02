@@ -121,13 +121,14 @@ pipeline {
                             error "Pipeline failed. Check logs for details."
                         }      
                     }
+                    deleteDir()
                 }
             }
         }
         
         stage('Promote') {
             steps {
-                sh '''
+                bat '''
                     git checkout ${env.MASTER_BRANCH}
                     git merge --no-ff origin/your-feature-branch
                     git push origin ${env.MASTER_BRANCH}
