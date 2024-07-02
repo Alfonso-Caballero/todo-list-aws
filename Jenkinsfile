@@ -31,13 +31,13 @@ pipeline {
                     stash name: 'code', includes : '**'
                 }
             }
-            /*
+            
             post {
                     always {
                         deleteDir()
                         }
                     }
-                    */
+                    
         }
         stage('Static Test') {
             agent {
@@ -158,12 +158,12 @@ pipeline {
                 }
             }
             */
-            /*
+            
             post {
                     always {
                         deleteDir()
                         }
                     }
-                    */
+                    
     }
 }
