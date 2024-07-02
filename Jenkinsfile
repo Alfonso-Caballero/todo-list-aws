@@ -129,11 +129,11 @@ pipeline {
         stage('Promote') {
             steps {
                 // Cambiar al directorio del repositorio clonado
-                sh 'git checkout main'
-                sh 'git merge --no-ff origin/develop'
+                bat 'git checkout main'
+                bat 'git merge --no-ff origin/develop'
                         
                 // Realizar push de la rama master a 'origin'
-                sh 'git push origin main'
+                bat 'git push origin main'
                 bat 'whoami'
                 bat 'hostname'
                 echo "${WORKSPACE}"
