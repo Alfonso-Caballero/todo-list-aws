@@ -14,22 +14,6 @@ pipeline {
     stages {
         stage('Get Code') {
             steps {
-                /*
-                bat """
-                @echo off
-                setlocal
-
-                REM Define variables
-                set BRANCH=develop
-                set TOKEN=%GIT_TOKEN%
-                set REPO_URL=https://%TOKEN%@github.com/Alfonso-Caballero/todo-list-aws.git
-
-                REM Clone the repository
-                git clone -b %BRANCH% %REPO_URL%
-
-                endlocal
-                """
-                */
                 git branch: 'develop', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
                 bat 'whoami'
                 bat 'hostname'
@@ -165,6 +149,6 @@ pipeline {
                         deleteDir()
                         }
                     }   
+                }
         }
-    }
 }
