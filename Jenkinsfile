@@ -96,9 +96,6 @@ pipeline {
                             
                             // Ejecutar las pruebas de integración con la URL capturada como parámetro
                            env.BASE_URL = baseUrl
-                           sh 'whoami'
-                           sh 'hostname'
-                           echo "${WORKSPACE}"
                     }
             }
         }
