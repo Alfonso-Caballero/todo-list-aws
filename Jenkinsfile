@@ -31,13 +31,11 @@ pipeline {
                     stash name: 'code', includes : '**'
                 }
             }
-            
             post {
                     always {
                         deleteDir()
                         }
-                    }
-                    
+                    }      
         }
         stage('Static Test') {
             agent {
@@ -59,13 +57,6 @@ pipeline {
                             echo "${WORKSPACE}"
                         }
                     }
-            /*
-                    post {
-                        always {
-                            deleteDir()
-                }
-            }
-            */
         }
         stage('Deploy') {
             agent {
@@ -105,22 +96,6 @@ pipeline {
                             // Ejecutar las pruebas de integración con la URL capturada como parámetro
                            env.BASE_URL = baseUrl
                     }
-                /*
-                sh '''
-                        sam deploy \
-                        --template-file .aws-sam/build/template.yaml \
-                        --stack-name my-staging-stack \
-                        --capabilities CAPABILITY_IAM \
-                        --no-confirm-changeset \
-                        --region us-east-1 \
-                        --s3-bucket bucketnugget \
-                        --parameter-overrides \
-                            Environment=staging \
-                            ParameterKey1=Value1 \
-                            ParameterKey2=Value2 \
-                        --force-upload
-                    '''
-                    */
             }
         }
         stage('Rest Test') {
@@ -145,22 +120,8 @@ pipeline {
                     }      
                 }
                 deleteDir()
-            }
-        }
-    }
-        /*
-        stage('Rest Test') {
-            agent {
-                label 'ec2'
-            }
-            steps {
-                script {
-                    sh "pytest test/integration/todoApiTest.py"
                 }
             }
-            */
-            
-            
-                    
+        }              
     }
 }
