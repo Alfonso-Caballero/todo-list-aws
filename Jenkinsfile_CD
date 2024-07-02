@@ -1,1 +1,26 @@
+pipeline {
+    agent any
 
+    options {
+        skipDefaultCheckout() // Default repository cloning fails, causing pipeline failure
+    }
+    
+    environment {
+        GIT_BRANCH = 'develop'
+        GIT_TOKEN = credentials('token')
+        MASTER_BRANCH = 'main'
+    }
+
+    stages {
+        stage('Get Code') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
+                bat 'whoami'
+                bat 'hostname'
+                echo "${WORKSPACE}"
+                stash name: 'code', includes : '**'
+                
+            }   
+        }
+  }
+}
