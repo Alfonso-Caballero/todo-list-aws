@@ -52,6 +52,7 @@ pipeline {
                                     --region us-east-1 \
                                     --s3-bucket bucketnugget2 \
                                     --parameter-overrides \
+                                        Stage=production \
                                         Environment=production \
                                         ParameterKey1=Value1 \
                                         ParameterKey2=Value2 \
