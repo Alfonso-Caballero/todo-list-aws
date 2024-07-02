@@ -8,24 +8,33 @@ pipeline {
     environment {
         GIT_REPO_URL = 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
         GIT_BRANCH = 'develop'
-        GIT_CREDENTIALS_ID = 'token'
+        GIT_TOKEN = credentials('token')
         MASTER_BRANCH = 'main'
     }
 
     stages {
         stage('Get Code') {
             steps {
-                script {
-                    withCredentials([gitUsernamePassword(credentialsId: 'token', gitToolName: 'git-tool')]) {
-                    git branch: 'develop',
-                        url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
-                }
+                bat """
+                @echo off
+                setlocal
+
+                REM Define variables
+                set BRANCH=develop
+                set TOKEN=%GIT_TOKEN%
+                set REPO_URL=https://%TOKEN%@github.com/Alfonso-Caballero/todo-list-aws.git
+
+                REM Clone the repository
+                git clone -b %BRANCH% %REPO_URL%
+
+                endlocal
+                """
                    
-                    bat 'whoami'
-                    bat 'hostname'
-                    echo "${WORKSPACE}"
-                    stash name: 'code', includes : '**'
-                }
+                bat 'whoami'
+                bat 'hostname'
+                echo "${WORKSPACE}"
+                stash name: 'code', includes : '**'
+                
             }   
         }
         stage('Static Test') {
