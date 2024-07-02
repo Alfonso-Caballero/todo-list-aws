@@ -44,7 +44,7 @@ pipeline {
                             sh 'hostname'
                             echo "${WORKSPACE}"
                             
-                            sh '/home/ubuntu/.local/bin/bandit --version'
+                            sh 'bandit --version'
                         }
                     }
             /*
