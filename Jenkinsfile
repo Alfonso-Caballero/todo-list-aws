@@ -119,12 +119,12 @@ pipeline {
                     script {
                         if (currentBuild.result == 'FAILURE') {
                             error "Pipeline failed. Check logs for details."
-                    }      
-                }
-                deleteDir()
+                        }      
+                    }
                 }
             }
         }
+        
         stage('Promote') {
             steps {
                 sh '''
