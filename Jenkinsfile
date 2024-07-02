@@ -70,6 +70,9 @@ pipeline {
         // Puedes añadir más etapas aquí según sea necesario
         }
         stage('Deploy') {
+            agent {
+                label 'ec2'
+            }
             steps {
                 unstash 'code'
                 sh 'sam build'
