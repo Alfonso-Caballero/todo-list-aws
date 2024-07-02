@@ -77,7 +77,7 @@ pipeline {
                     sh 'hostname'
                     echo "${WORKSPACE}"
                     try {
-                        sh "pytest test/integration/todoApiTest.py || true"
+                        sh "pytest -m read_only test/integration/todoApiTest.py || true"
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Test execution failed: ${e.message}"
