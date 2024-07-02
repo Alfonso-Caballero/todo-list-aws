@@ -129,16 +129,20 @@ pipeline {
         stage('Promote') {
             steps {
                 script{
-                    bat '''
-                        git checkout %MASTER_BRANCH%
-                        git merge --no-ff origin/develop
-                        git push origin %MASTER_BRANCH% --token %GIT_CREDENTIALS_ID%
-                    '''
+                    // Cambiar al branch principal y actualizarlo desde el remoto
+                    bat "git checkout main"
+                    bat "git pull origin main"
+                    
+                    // Fusionar la rama de características en la rama principal
+                    bat "git merge --no-ff origin/develop"
+                    
+                    // Realizar el push de la rama principal actualizada
+                    bat "git push origin main"
                 }
                 bat 'whoami'
                 bat 'hostname'
                 echo "${WORKSPACE}"
-                echo "Code successfully merged into ${env.MASTER_BRANCH}."
+                echo "Code successfully merged into main."
                     
             }
             post {
