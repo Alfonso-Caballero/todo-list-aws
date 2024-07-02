@@ -85,10 +85,10 @@ pipeline {
                                 script: '''
                                     sam deploy \
                                     --template-file .aws-sam/build/template.yaml \
-                                    --stack-name ${env.STACK_NAME} \
+                                    --stack-name my-staging-stack \
                                     --capabilities CAPABILITY_IAM \
                                     --no-confirm-changeset \
-                                    --region ${env.AWS_DEFAULT_REGION} \
+                                    --region us-east-1 \
                                     --s3-bucket bucketnugget \
                                     --parameter-overrides \
                                         Environment=staging \
