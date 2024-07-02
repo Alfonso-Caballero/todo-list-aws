@@ -132,9 +132,35 @@ pipeline {
             }
             steps {
                 script {
+                    try {
+                        sh "pytest test/integration/todoApiTest.py"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Test execution failed: ${e.message}"
+                    }
+                }
+            }
+            post {
+                always {
+                    script {
+                        if (currentBuild.result == 'FAILURE') {
+                            error "Pipeline failed. Check logs for details."
+                }
+            }
+        }
+    }
+}
+        /*
+        stage('Rest Test') {
+            agent {
+                label 'ec2'
+            }
+            steps {
+                script {
                     sh "pytest test/integration/todoApiTest.py"
                 }
             }
+            */
             /*
             post {
                     always {
