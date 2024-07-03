@@ -33,6 +33,34 @@ pipeline {
                 stash name: 'code', includes: '**'
                 }
             }
+        stage('Get Code') {
+            when {
+                branch 'main'
+            }
+            steps {
+                git branch: 'main', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
+                
+                script {
+                        def fileUrl = 'https://github.com/Alfonso-Caballero/todo-list-aws-config/raw/production/samconfig.toml'
+                        def fileName = 'samconfig.toml'
+                    
+                        bat "curl -o %WORKSPACE%\\${fileName} ${fileUrl}"
+                    
+                        bat "type %WORKSPACE%\\${fileName}"
+                        }
+                
+                bat 'whoami'
+                bat 'hostname'
+                echo "${WORKSPACE}"
+                
+                stash name: 'code', includes: '**'
+                }
+            post {
+                always {
+                        deleteDir()
+                        }
+                    } 
+        }
         stage('Static Test') {
             when {
                 branch 'develop'
