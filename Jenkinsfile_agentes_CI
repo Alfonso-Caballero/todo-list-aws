@@ -87,6 +87,7 @@ pipeline {
                 label 'agent2'
             }
             steps {
+                unstash 'code'
                 script {
                     sh 'whoami'
                     sh 'hostname'
@@ -107,7 +108,6 @@ pipeline {
                             error "Pipeline failed. Check logs for details."
                         }      
                     }
-                    deleteDir()
                 }
             }
         }
