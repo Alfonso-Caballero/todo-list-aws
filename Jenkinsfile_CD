@@ -14,7 +14,12 @@ pipeline {
                 echo "${WORKSPACE}"
                 stash name: 'code', includes : '**'
                 
-            }   
+            }
+            post {
+                always {
+                        deleteDir()
+                        }
+                    } 
         }
         stage('Deploy') {
             agent {
