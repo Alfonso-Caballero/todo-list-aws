@@ -68,44 +68,17 @@ pipeline {
                 label 'ec2'
             }
             steps {
-                script {
-            sh 'whoami'
-            sh 'hostname'
-            echo "${WORKSPACE}"
-            try {
-                // Crear un script Python para contar las pruebas con la marca 'read_only'
-                def scriptContent = '''
-import pytest
-
-def count_read_only_tests():
-    test_files = ['test/integration/todoApiTest.py']
-    read_only_tests = 0
-    for file in test_files:
-        items = pytest.main(['--collect-only', '-q', file])
-        for item in items:
-            if 'read_only' in item.keywords:
-                read_only_tests += 1
-    print(read_only_tests)
-
-if __name__ == '__main__':
-    count_read_only_tests()
-'''
-                writeFile file: 'count_read_only_tests.py', text: scriptContent
-
-                // Ejecutar el script Python y capturar el resultado
-                def readOnlyTestCount = sh(script: "python3 count_read_only_tests.py", returnStdout: true).trim()
-                echo "Number of read-only tests: ${readOnlyTestCount}"
-
-                if (readOnlyTestCount != "0") {
-                    sh "pytest -m read_only test/integration/todoApiTest.py || true"
-                } else {
-                    echo "No read-only tests found. Skipping pytest execution."
+                    script {
+                    sh 'whoami'
+                    sh 'hostname'
+                    echo "${WORKSPACE}"
+                    try {
+                        sh "pytest -m read_only test/integration/todoApiTest.py"
+                    } catch (Exception e) {
+                        currentBuild.result = 'FAILURE'
+                        error "Test execution failed: ${e.message}"
+                    }
                 }
-            } catch (Exception e) {
-                currentBuild.result = 'FAILURE'
-                error "Test execution failed: ${e.message}"
-            }
-        }
             }
             post {
                 always {
