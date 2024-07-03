@@ -14,6 +14,7 @@ pipeline {
             steps {
                 // Clonar el repositorio principal
                 git branch: 'develop', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
+                /*
                 script {
                         def configRepo = 'https://github.com/Alfonso-Caballero/todo-list-aws-config.git'
                         def configBranch = 'staging'
@@ -23,7 +24,7 @@ pipeline {
                         def fileUrl = "${configRepo}/raw/${configBranch}/${fileName}"
                         bat "curl -o ${WORKSPACE}/${fileName} ${fileUrl}"
                         }
-                
+                */
         
                 // Resto de los pasos
                 bat 'whoami'
