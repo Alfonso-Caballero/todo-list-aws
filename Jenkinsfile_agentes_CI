@@ -135,6 +135,11 @@ pipeline {
         
                         git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
                             merge develop/develop --no-ff --no-edit
+
+                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
+                            checkout main -- Jenkinsfile
+                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
+                            checkout main -- Jenkinsfile_agentes
         
                         git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
                             push origin main
