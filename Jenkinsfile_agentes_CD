@@ -4,23 +4,22 @@ pipeline {
     options {
         skipDefaultCheckout() // Default repository cloning fails, causing pipeline failure
     }
-    
-    environment {
-        GIT_TOKEN = credentials('token')
-        GIT_EMAIL = credentials('Github-Email')
-        GIT_USER = credentials('Github-User')
-    }
 
     stages {
         stage('Get Code') {
             steps {
-                git branch: 'develop', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
+                git branch: 'main', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
                 bat 'whoami'
                 bat 'hostname'
                 echo "${WORKSPACE}"
                 stash name: 'code', includes : '**'
                 
-            }   
+            }
+            post {
+                always {
+                        deleteDir()
+                        }
+                    } 
         }
         stage('Static Test') {
             agent {
@@ -58,14 +57,14 @@ pipeline {
                                 script: '''
                                     sam deploy \
                                     --template-file .aws-sam/build/template.yaml \
-                                    --stack-name my-staging-agents-stack \
+                                    --stack-name my-production-agents-stack \
                                     --capabilities CAPABILITY_IAM \
                                     --no-confirm-changeset \
                                     --region us-east-1 \
                                     --s3-bucket bucketnugget \
                                     --parameter-overrides \
-                                        Stage=staging \
-                                        Environment=staging \
+                                        Stage=production \
+                                        Environment=production \
                                         ParameterKey1=Value1 \
                                         ParameterKey2=Value2 \
                                     --force-upload
@@ -83,25 +82,39 @@ pipeline {
                            env.BASE_URL = baseUrl
                     }
             }
+            post {
+                always {
+                        deleteDir()
+                        }
+                    }
         }
         stage('Rest Test') {
             agent {
                 label 'agent2'
             }
             steps {
-                unstash 'code'
-                script {
-                    sh 'whoami'
-                    sh 'hostname'
-                    echo "${WORKSPACE}"
-                    try {
-                        sh "pytest --junitxml=result-rest.xml test/integration/todoApiTest.py"
-                        junit 'result*.xml'
-                    } catch (Exception e) {
-                        currentBuild.result = 'FAILURE'
-                        error "Test execution failed: ${e.message}"
+                    script {
+                        unstash 'code'
+                        sh 'whoami'
+                        sh 'hostname'
+                        echo "${WORKSPACE}"
+                        try {
+                            def pytestResult = sh(script: "pytest -m read_only --junitxml=result-rest.xml test/integration/todoApiTest.py", returnStatus: true)
+                            echo "Pytest returned status: ${pytestResult}"
+                            if (pytestResult == 0) {
+                                echo "Pytest executed successfully."
+                                junit 'result*.xml'
+                            } else if (pytestResult == 5) {  // Código de salida 5 indica que no se encontraron pruebas
+                                echo "No read-only tests found. Skipping pytest execution."
+                            } else {
+                                currentBuild.result = 'FAILURE'
+                                error "Test execution failed with status: ${pytestResult}"
+                            }
+                        } catch (Exception e) {
+                            currentBuild.result = 'FAILURE'
+                            error "Test execution failed: ${e.message}"
+                        }
                     }
-                }
             }
             post {
                 always {
@@ -110,53 +123,9 @@ pipeline {
                             error "Pipeline failed. Check logs for details."
                         }      
                     }
+                    deleteDir()
                 }
             }
         }
-        
-        stage('Promote') {
-            agent {
-                  label 'agent2'
-              }
-            steps {
-                withCredentials([string(credentialsId: 'token', variable: 'GIT_TOKEN')]) {
-                    script {
-                        // Masking supported pattern matches of GIT_TOKEN
-                        echo "Cloning repository..."
-                        sh """
-                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
-                            clone -b main https://\$GIT_TOKEN@github.com/Alfonso-Caballero/todo-list-aws.git main-repo
-                        cd main-repo
-        
-                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
-                            remote add develop https://\$GIT_TOKEN@github.com/Alfonso-Caballero/todo-list-aws.git
-                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
-                            fetch develop develop
-        
-                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
-                            merge develop/develop --no-ff --no-edit
-
-                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
-                            checkout main -- Jenkinsfile
-                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
-                            checkout main -- Jenkinsfile_agentes
-        
-                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
-                            push origin main
-                        """
-                    }
-                }
-                sh 'whoami'
-                sh 'hostname'
-                echo "${WORKSPACE}"
-                echo "Code successfully merged into main."
-                    
-            }
-            post {
-                    always {
-                        deleteDir()
-                        }
-                    }   
-                }
         }
 }
