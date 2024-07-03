@@ -5,6 +5,10 @@ pipeline {
         skipDefaultCheckout() // Default repository cloning fails, causing pipeline failure
     }
 
+    environment {
+            GIT_TOKEN = credentials('token')
+        }
+
     stages {
         stage('Get Code') {
             steps {
