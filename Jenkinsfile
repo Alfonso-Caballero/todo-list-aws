@@ -10,7 +10,7 @@ pipeline {
     }
 
     stages {
-        stage('Get Code (develop)') {
+        stage('Get Code develop') {
             when {
                 branch 'develop'
             }
