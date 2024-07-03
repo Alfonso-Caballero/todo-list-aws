@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Get Code') {
             steps {
-                git branch: 'develop', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
+                git branch: 'main', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
                 
                 script {
                         def fileUrl = 'https://github.com/Alfonso-Caballero/todo-list-aws-config/raw/production/samconfig.toml'
