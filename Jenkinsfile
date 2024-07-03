@@ -11,6 +11,9 @@ pipeline {
 
     stages {
         stage('Get Code') {
+            when {
+                branch 'develop'
+            }
             steps {
                 git branch: 'develop', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
                 
@@ -31,6 +34,9 @@ pipeline {
                 }
             }
         stage('Static Test') {
+            when {
+                branch 'develop'
+            }
             agent {
                 label 'ec2'
             }
@@ -52,6 +58,9 @@ pipeline {
                     }
         }
         stage('Deploy') {
+            when {
+                branch 'develop'
+            }
             agent {
                 label 'ec2'
             }
@@ -93,6 +102,9 @@ pipeline {
             }
         }
         stage('Rest Test') {
+            when {
+                branch 'develop'
+            }
             agent {
                 label 'ec2'
             }
@@ -123,6 +135,9 @@ pipeline {
         }
         
         stage('Promote') {
+            when {
+                branch 'develop'
+            }
             steps {
                 withCredentials([string(credentialsId: 'token', variable: 'GIT_TOKEN')]) {
                     bat """
