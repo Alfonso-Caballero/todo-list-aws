@@ -75,7 +75,7 @@ pipeline {
                     try {
                         // Crear un script Python para contar las pruebas con la marca 'read_only'
                         def scriptContent = """
-                        import pytest
+                    import pytest
         
                         def count_read_only_tests():
                             test_files = ['test/integration/todoApiTest.py']
