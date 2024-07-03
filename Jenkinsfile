@@ -141,6 +141,7 @@ pipeline {
                     git merge develop/develop --no-ff --no-edit
 
                     git checkout main -- Jenkinsfile
+                    git checkout main -- Jenkinsfile_agentes
                     REM Push the changes to the main branch using the token
                     git push origin main
 
