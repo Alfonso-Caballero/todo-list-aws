@@ -10,7 +10,7 @@ pipeline {
     }
 
     stages {
-        stage('Get Code') {
+        stage('Get Code (Develop)') {
             when {
                 branch 'develop'
             }
@@ -63,7 +63,7 @@ pipeline {
                     } 
         }
         
-        stage('Static Test') {
+        stage('Static Test (Develop)') {
             when {
                 branch 'develop'
             }
@@ -88,7 +88,7 @@ pipeline {
                     }
         }
         
-        stage('Deploy') {
+        stage('Deploy (Develop)') {
             when {
                 branch 'develop'
             }
@@ -177,7 +177,7 @@ pipeline {
                     }
             }
         }
-        stage('Rest Test') {
+        stage('Rest Test (Develop)') {
             when {
                 branch 'develop'
             }
