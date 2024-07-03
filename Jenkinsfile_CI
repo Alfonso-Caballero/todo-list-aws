@@ -16,15 +16,14 @@ pipeline {
                 git branch: 'develop', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
                 
                 script {
-                        def configRepo = 'https://github.com/Alfonso-Caballero/todo-list-aws-config.git'
-                        def configBranch = 'staging'
+                        def fileUrl = 'https://github.com/Alfonso-Caballero/todo-list-aws-config/raw/staging/samconfig.toml'
                         def fileName = 'samconfig.toml'
-        
-                        // Construir la URL del archivo
-                        def fileUrl = "${configRepo}/raw/${configBranch}/${fileName}"
-                        bat "wget -O ${WORKSPACE}/${fileName} ${fileUrl}"
-                        echo "Contenido de samconfig.toml:"
-                        bat "type ${WORKSPACE}\\${fileName}"
+                    
+                        // Descargar el archivo samconfig.toml usando curl
+                        bat "curl -o %WORKSPACE%\\${fileName} ${fileUrl}"
+                    
+                        // Mostrar contenido de samconfig.toml por pantalla
+                        bat "type %WORKSPACE%\\${fileName}"
                         }
                 
         
