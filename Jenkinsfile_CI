@@ -12,14 +12,27 @@ pipeline {
     stages {
         stage('Get Code') {
             steps {
+                // Clonar el repositorio principal
                 git branch: 'develop', url: 'https://github.com/Alfonso-Caballero/todo-list-aws.git'
+                script {
+                        def configRepo = 'https://github.com/Alfonso-Caballero/todo-list-aws-config.git'
+                        def configBranch = 'staging'
+                        def fileName = 'samconfig.toml'
+        
+                        // Construir la URL del archivo
+                        def fileUrl = "${configRepo}/raw/${configBranch}/${fileName}"
+                        bat "curl -o ${WORKSPACE}\\${fileName} ${fileUrl}"
+                        }
+                }
+        
+                // Resto de los pasos
                 bat 'whoami'
                 bat 'hostname'
                 echo "${WORKSPACE}"
-                stash name: 'code', includes : '**'
                 
-            }   
-        }
+                // Stash incluyendo el archivo samconfig.toml
+                stash name: 'code', includes: '**'
+            }
         stage('Static Test') {
             agent {
                 label 'ec2'
