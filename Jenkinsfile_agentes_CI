@@ -118,9 +118,7 @@ pipeline {
               }
             steps {
                 withCredentials([string(credentialsId: 'token', variable: 'GIT_TOKEN')]) {
-                    bat """
-                    @echo off
-                    setlocal
+                    sh """
 
                     REM Clone the main branch using the token
                     git clone -b main https://%GIT_TOKEN%@github.com/Alfonso-Caballero/todo-list-aws.git main-repo
@@ -136,7 +134,6 @@ pipeline {
                     REM Push the changes to the main branch using the token
                     git push origin main
 
-                    endlocal
                     """
                 }
                 bat 'whoami'
