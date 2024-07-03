@@ -8,7 +8,7 @@ pipeline {
     environment {
         GIT_TOKEN = credentials('token')
         GIT_EMAIL = credentials('Github-Email')
-        GIT_USER = credentials('Github-User'))
+        GIT_USER = credentials('Github-User')
     }
 
     stages {
