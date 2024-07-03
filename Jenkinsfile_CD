@@ -4,12 +4,6 @@ pipeline {
     options {
         skipDefaultCheckout() // Default repository cloning fails, causing pipeline failure
     }
-    
-    environment {
-        GIT_BRANCH = 'develop'
-        GIT_TOKEN = credentials('token')
-        MASTER_BRANCH = 'main'
-    }
 
     stages {
         stage('Get Code') {
