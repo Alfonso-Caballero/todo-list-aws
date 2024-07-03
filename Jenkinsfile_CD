@@ -74,22 +74,22 @@ pipeline {
             echo "${WORKSPACE}"
             try {
                 // Crear un script Python para contar las pruebas con la marca 'read_only'
-                def scriptContent = """
-                import pytest
+                def scriptContent = '''
+import pytest
 
-                def count_read_only_tests():
-                    test_files = ['test/integration/todoApiTest.py']
-                    read_only_tests = 0
-                    for file in test_files:
-                        items = pytest.main(['--collect-only', '-q', file])
-                        for item in items:
-                            if 'read_only' in item.keywords:
-                                read_only_tests += 1
-                    print(read_only_tests)
+def count_read_only_tests():
+    test_files = ['test/integration/todoApiTest.py']
+    read_only_tests = 0
+    for file in test_files:
+        items = pytest.main(['--collect-only', '-q', file])
+        for item in items:
+            if 'read_only' in item.keywords:
+                read_only_tests += 1
+    print(read_only_tests)
 
-                if __name__ == '__main__':
-                    count_read_only_tests()
-                """
+if __name__ == '__main__':
+    count_read_only_tests()
+'''
                 writeFile file: 'count_read_only_tests.py', text: scriptContent
 
                 // Ejecutar el script Python y capturar el resultado
