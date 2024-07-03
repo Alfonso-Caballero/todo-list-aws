@@ -118,26 +118,26 @@ pipeline {
               }
             steps {
                 withCredentials([string(credentialsId: 'token', variable: 'GIT_TOKEN')]) {
-                    sh """
-
-                    REM Clone the main branch using the token
-                    git clone -b main https://%GIT_TOKEN%@github.com/Alfonso-Caballero/todo-list-aws.git main-repo
-                    cd main-repo
-
-                    REM Add the develop branch as a remote and fetch it
-                    git remote add develop https://%GIT_TOKEN%@github.com/Alfonso-Caballero/todo-list-aws.git
-                    git fetch develop develop
-
-                    REM Merge the develop branch into main using the token
-                    git merge develop/develop --no-ff --no-edit
-
-                    REM Push the changes to the main branch using the token
-                    git push origin main
-
-                    """
+                    script {
+                        sh """
+                        # Clone the main branch using the token
+                        git clone -b main https://\$GIT_TOKEN@github.com/Alfonso-Caballero/todo-list-aws.git main-repo
+                        cd main-repo
+        
+                        # Add the develop branch as a remote and fetch it
+                        git remote add develop https://\$GIT_TOKEN@github.com/Alfonso-Caballero/todo-list-aws.git
+                        git fetch develop develop
+        
+                        # Merge the develop branch into main using the token
+                        git merge develop/develop --no-ff --no-edit
+        
+                        # Push the changes to the main branch using the token
+                        git push origin main
+                        """
+                    }
                 }
-                bat 'whoami'
-                bat 'hostname'
+                sh 'whoami'
+                sh 'hostname'
                 echo "${WORKSPACE}"
                 echo "Code successfully merged into main."
                     
