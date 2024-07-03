@@ -121,11 +121,9 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'token', variable: 'GIT_TOKEN')]) {
                     script {
+                        // Masking supported pattern matches of GIT_TOKEN
+                        echo "Cloning repository..."
                         sh """
-
-                        git config --global user.email '\${GIT_EMAIL}'
-                        git config --global user.name '\${GIT_USER}'
-
                         # Clone the main branch using the token
                         git clone -b main https://\$GIT_TOKEN@github.com/Alfonso-Caballero/todo-list-aws.git main-repo
                         cd main-repo
@@ -140,7 +138,7 @@ pipeline {
                         # Push the changes to the main branch using the token
                         git push origin main
                         """
-                    }
+            }
                 }
                 sh 'whoami'
                 sh 'hostname'
