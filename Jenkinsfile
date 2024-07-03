@@ -51,9 +51,6 @@ pipeline {
                 sh 'whoami'
                 sh 'hostname'
                 echo "${WORKSPACE}"
-                sh "aws cloudformation delete-stack --stack-name todo-list-aws"
-                echo "Waiting for stack deletion..."
-                sh "aws cloudformation wait stack-delete-complete --stack-name todo-list-aws"
                 sh 'sam build'
                 sh 'sam validate --region us-east-1'
                 script{
