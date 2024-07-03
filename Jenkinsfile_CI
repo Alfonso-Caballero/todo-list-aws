@@ -22,7 +22,7 @@ pipeline {
         
                         // Construir la URL del archivo
                         def fileUrl = "${configRepo}/raw/${configBranch}/${fileName}"
-                        bat "curl -o ${WORKSPACE}/${fileName} ${fileUrl}"
+                        bat "wget -O ${WORKSPACE}/${fileName} ${fileUrl}"
                         echo "Contenido de samconfig.toml:"
                         bat "type ${WORKSPACE}\\${fileName}"
                         }
