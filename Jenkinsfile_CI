@@ -23,7 +23,7 @@ pipeline {
                         def fileUrl = "${configRepo}/raw/${configBranch}/${fileName}"
                         bat "curl -o ${WORKSPACE}\\${fileName} ${fileUrl}"
                         }
-                }
+                
         
                 // Resto de los pasos
                 bat 'whoami'
@@ -32,6 +32,7 @@ pipeline {
                 
                 // Stash incluyendo el archivo samconfig.toml
                 stash name: 'code', includes: '**'
+                }
             }
         stage('Static Test') {
             agent {
