@@ -21,7 +21,7 @@ pipeline {
         
                         // Construir la URL del archivo
                         def fileUrl = "${configRepo}/raw/${configBranch}/${fileName}"
-                        bat "curl -o ${WORKSPACE}\\${fileName} ${fileUrl}"
+                        bat "curl -o ${WORKSPACE}/${fileName} ${fileUrl}"
                         }
                 
         
