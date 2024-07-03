@@ -86,7 +86,7 @@ pipeline {
         }
         stage('Rest Test') {
             agent {
-                label 'ec2'
+                label 'agent2'
             }
             steps {
                     script {
