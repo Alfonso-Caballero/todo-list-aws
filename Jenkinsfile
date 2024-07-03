@@ -93,6 +93,7 @@ pipeline {
                     echo "${WORKSPACE}"
                     try {
                         sh "pytest --junitxml=result-rest.xml test/integration/todoApiTest.py"
+                        junit 'result*.xml'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Test execution failed: ${e.message}"
