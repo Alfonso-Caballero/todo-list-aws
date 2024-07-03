@@ -73,7 +73,7 @@ pipeline {
                         echo "Number of read-only tests: ${readOnlyTestCount}"
         
                         if (readOnlyTestCount != "0") {
-                            sh "pytest -m read_only test/integration/todoApiTest.py || true"
+                            sh "pytest -m read_only test/integration/todoApiTest.py"
                         } else {
                             echo "No read-only tests found. Skipping pytest execution."
                         }
