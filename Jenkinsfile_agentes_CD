@@ -82,6 +82,11 @@ pipeline {
                            env.BASE_URL = baseUrl
                     }
             }
+            post {
+                always {
+                        deleteDir()
+                        }
+                    }
         }
         stage('Rest Test') {
             agent {
