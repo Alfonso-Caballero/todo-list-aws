@@ -34,7 +34,7 @@ pipeline {
                 }
             }
         
-        stage('Get Code') {
+        stage('Get Code (Main)') {
             when {
                 branch 'main'
             }
@@ -132,7 +132,7 @@ pipeline {
                     }
             }
         }
-        stage('Deploy') {
+        stage('Deploy (Main)') {
             when {
                 branch 'main'
             }
@@ -210,7 +210,7 @@ pipeline {
             }
         }
         
-        stage('Rest Test') {
+        stage('Rest Test (Main)') {
             when {
                 branch 'main'
             }
@@ -252,7 +252,7 @@ pipeline {
             }
         }
         
-        stage('Promote') {
+        stage('Promote (Develop)') {
             when {
                 branch 'develop'
             }
