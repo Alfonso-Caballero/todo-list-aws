@@ -73,9 +73,8 @@ pipeline {
                         sh 'hostname'
                         echo "${WORKSPACE}"
                         try {
-                            def pytestResult = sh(script: "pytest -m read_only --junitxml=result-rest.xml test/integration/todoApiTest.py", returnStatus: true)
+                            def pytestResult = sh(script: "pytest -m read_only test/integration/todoApiTest.py", returnStatus: true)
                             echo "Pytest returned status: ${pytestResult}"
-                            junit 'result*.xml'
                             if (pytestResult == 0) {
                                 echo "Pytest executed successfully."
                             } else if (pytestResult == 5) {  // Código de salida 5 indica que no se encontraron pruebas
