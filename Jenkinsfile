@@ -6,9 +6,7 @@ pipeline {
     }
     
     environment {
-        GIT_BRANCH = 'develop'
         GIT_TOKEN = credentials('token')
-        MASTER_BRANCH = 'main'
     }
 
     stages {
@@ -137,6 +135,7 @@ pipeline {
                     endlocal
                     """
                 }
+                bat 'whoami'
                 bat 'hostname'
                 echo "${WORKSPACE}"
                 echo "Code successfully merged into main."
