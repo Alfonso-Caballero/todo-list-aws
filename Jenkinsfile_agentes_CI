@@ -124,21 +124,22 @@ pipeline {
                         // Masking supported pattern matches of GIT_TOKEN
                         echo "Cloning repository..."
                         sh """
-                        # Clone the main branch using the token
-                        git clone -b main https://\$GIT_TOKEN@github.com/Alfonso-Caballero/todo-list-aws.git main-repo
+                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
+                            clone -b main https://\$GIT_TOKEN@github.com/Alfonso-Caballero/todo-list-aws.git main-repo
                         cd main-repo
         
-                        # Add the develop branch as a remote and fetch it
-                        git remote add develop https://\$GIT_TOKEN@github.com/Alfonso-Caballero/todo-list-aws.git
-                        git fetch develop develop
+                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
+                            remote add develop https://\$GIT_TOKEN@github.com/Alfonso-Caballero/todo-list-aws.git
+                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
+                            fetch develop develop
         
-                        # Merge the develop branch into main using the token
-                        git merge develop/develop --no-ff --no-edit
+                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
+                            merge develop/develop --no-ff --no-edit
         
-                        # Push the changes to the main branch using the token
-                        git push origin main
+                        git -c user.email='${GIT_EMAIL}' -c user.name='${GIT_USER}' \
+                            push origin main
                         """
-            }
+                    }
                 }
                 sh 'whoami'
                 sh 'hostname'
