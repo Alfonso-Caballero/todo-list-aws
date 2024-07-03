@@ -68,7 +68,8 @@ pipeline {
                     sh 'hostname'
                     echo "${WORKSPACE}"
                     try {
-                        sh "pytest -m read_only test/integration/todoApiTest.py || true"
+                        sh "pytest -m read_only --junitxml=result-rest.xml test/integration/todoApiTest.py || true"
+                        junit 'result*.xml'
                     } catch (Exception e) {
                         currentBuild.result = 'FAILURE'
                         error "Test execution failed: ${e.message}"
